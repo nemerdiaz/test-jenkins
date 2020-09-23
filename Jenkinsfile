@@ -7,7 +7,7 @@ pipeline {
 		git poll: true, url: 'git@github.com:nemerdiaz/test-jenkins.git'
                }
         }
-        stage('CreateVirtualEnv') {
+        stage('CrearEnternoVirtual') {
             steps {
 				sh '''
 					bash -c "virtualenv entorno_virtual && source entorno_virtual/bin/activate"
@@ -15,21 +15,21 @@ pipeline {
 
             }
         }
-        stage('InstallRequirements') {
+        stage('InstalarRequerimientos') {
             steps {
             	sh '''
             		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pip install -r requirements.txt"
                 '''
             }
         }   
-        stage('TestApp') {
+        stage('PruebaApp') {
             steps {
             	sh '''
             		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate &&  cd src && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pytest && cd .."
                 '''
             }
         }  
-        stage('RunApp') {
+        stage('CorriendoApp') {
             steps {
             	sh '''
             		bash -c "source entorno_virtual/bin/activate ; ${WORKSPACE}/entorno_virtual/bin/python src/main.py &"
