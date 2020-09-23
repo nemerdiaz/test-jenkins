@@ -7,7 +7,7 @@ pipeline {
 		git poll: true, url: 'git@github.com:nemerdiaz/test-jenkins.git'
                }
         }
-        stage('CrearEnternoVirtual') {
+        stage('CreateVirtualEnv') {
             steps {
 				sh '''
 					bash -c "virtualenv entorno_virtual && source entorno_virtual/bin/activate"
@@ -15,48 +15,26 @@ pipeline {
 
             }
         }
-        stage('InstalarRequerimientos') {
+        stage('InstallRequirements') {
             steps {
             	sh '''
             		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pip install -r requirements.txt"
                 '''
             }
         }   
-        stage('PruebaApp') {
+        stage('Test') {
             steps {
             	sh '''
             		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate &&  cd src && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pytest && cd .."
                 '''
             }
         }  
-        stage('CorriendoApp') {
+        stage('Run') {
             steps {
             	sh '''
             		bash -c "source entorno_virtual/bin/activate ; ${WORKSPACE}/entorno_virtual/bin/python src/main.py &"
                 '''
             }
         } 
-	
-
-	    stages {
-        stage('Build') {
-            steps {
-                sh './gradlew build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './gradlew check'
-            }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
-            junit 'build/reports/**/*.xml'
-        }
-    }
-}
   }
 }
