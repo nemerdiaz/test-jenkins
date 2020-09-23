@@ -7,7 +7,7 @@ def suma(a,b):
 
 @app.route('/')
 def hello():
-    res = suma (9,5)
+    res = suma (5,5)
     name = request.args.get("name", "World")
     return f'Hello, {escape(name)}! %s' % (res)
 #    return "Hello Wolrd!"
