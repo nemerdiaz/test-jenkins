@@ -10,7 +10,8 @@ pipeline {
         stage('CreateVirtualEnv') {
             steps {
 				sh '''
-					bash -c "virtualenv entorno_virtual && source entorno_virtual/bin/activate"
+					bash -c "Error"
+					#bash -c "virtualenv entorno_virtual && source entorno_virtual/bin/activate"
 				'''
 
             }
