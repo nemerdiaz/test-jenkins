@@ -2,12 +2,8 @@ from flask import Flask, escape, request
 
 app = Flask(__name__)
 
-
-
 def suma(a,b):
     return a+b
-
-
 
 @app.route('/')
 def hello():
